@@ -1,25 +1,19 @@
 name: Sync Fork
 
 on:
-  workflow_dispatch:
-  schedule: 
-  - cron: "0 00 * * *"
-  
+  schedule:
+    - cron: '*/30 * * * *' # every 30 minutes
+  workflow_dispatch: # on button click
+
 jobs:
   sync:
+
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Sync and merge upstream repository with your current repository
-        uses: dabreadman/sync-upstream-repo@v1.0.0.b
+      - uses: ethereum/go-ethereum@v1.4
         with:
-          # URL of gitHub public upstream repo
-          upstream_repo: https://github.com/ethereum/go-ethereum
-          # Branch to merge from upstream (defaults to downstream branch)
-          upstream_branch: master
-          # Branch to merge into downstream
-          downstream_branch: master
-          # GitHub Bot token
           token: ${{ secrets.PERSONAL_TOKEN }}
+          owner: karalabe
+          base: master
+          head: master
